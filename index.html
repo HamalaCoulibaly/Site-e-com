@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ado Multi-Servives</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+   
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-logo">Ado-Services</a>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Rechercher...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="navbar-links">
+                <a href="#" class="active">Accueil</a>
+                <a href="#products">Produits</a>
+                <a href="#about">A propos</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="navbar-actions">
+                <div class="user-account" id="userAccount">
+                    <i class="fas fa-user"></i>
+                    <span>Compte</span>
+                    <div class="account-dropdown">
+                        <div class="account-info" id="accountInfo">
+                            <a href="#" id="loginBtn">Se connecter</a>
+                            <a href="#" id="registerBtn">S'inscrire</a>
+                        </div>
+                        <div class="account-logged" id="accountLogged" style="display: none;">
+                            <p id="welcomeUser">Bonjour, </p>
+                            <a href="#">Mon profil</a>
+                            <a href="#">Mes commandes</a>
+                            <a href="#" id="logoutBtn">Déconnexion</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart" id="cartIcon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Panier</span>
+                    <span class="cart-count" id="cartCount">0</span>
+                    <div class="cart-dropdown" id="cartDropdown">
+                        <div class="cart-items" id="cartItems">
+                            <p class="empty-cart">Votre panier est vide</p>
+                        </div>
+                        <div class="cart-total">
+                            <p>Total: <span id="cartTotal">0.00</span> MAD </p>
+                            <button class="checkout-btn">Payer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Connexion</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Se connecter</button>
+            </form>
+            <p>Pas encore de compte? <a href="#" id="switchToRegister">S'inscrire</a></p>
+        </div>
+    </div>
+
+    
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Inscription</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Nom</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn">S'inscrire</button>
+            </form>
+            <p>Déjà un compte? <a href="#" id="switchToLogin">Se connecter</a></p>
+        </div>
+    </div>
+
+    
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Découvrez nos produits</h1>
+                <p>Qualité, style et confort à prix abordables</p>
+                <a href="#products" class="btn">Acheter maintenant</a>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="categoryFilter">Catégorie:</label>
+                    <select id="categoryFilter">
+                        <option value="all">Toutes les catégories</option>
+                        <option value="electronique">Électronique</option>
+                        <option value="vetements">Vêtements</option>
+                        <option value="maison">Maison</option>
+                        <option value="beaute">Beauté</option>
+                        <option value="sport">Sport</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="minPrice">Prix min:</label>
+                    <input type="number" id="minPrice" min="0" value="0">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="maxPrice">Prix max:</label>
+                    <input type="number" id="maxPrice" min="0" value="10000">
+                </div>
+                
+                <button id="applyFilters" class="btn">Appliquer</button>
+                <button id="resetFilters" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </section>
+
+        <section id="products" class="products-section">
+            <h2>Nos produits</h2>
+            <div class="products-container" id="productsContainer">
+                <!-- Les produits seront dynamiquement chargés ici -->
+                <div class="loading">Chargement des produits...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div class="product-modal" id="productModal">
+        <div class="product-modal-content">
+            <span class="close-modal" id="closeProductModal">&times;</span>
+            <div class="product-modal-body" id="productModalBody">
+                <!-- Chargement des details du produit -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <h2 class="section-title">Pourquoi nous choisir</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <h3>Livraison gratuite</h3>
+                <p>Livraison gratuite pour toutes les commandes de plus de 500 MAD.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3>Retours faciles</h3>
+                <p>Retours gratuits sous 30 jours pour tous nos produits.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h3>Paiement sécurisé</h3>
+                <p>Vos paiements sont sécurisés avec les meilleures technologies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>À propos</h3>
+                <p>Ado-Multi-Services est votre destination en ligne pour des produits de qualité à prix compétitifs.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#products">Produits</a></li>
+                    <li><a href="#products">Promotions</a></li>
+                    <li><a href="#products">Nouveautés</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Service client</h3>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#about">Livraison</a></li>
+                    <li><a href="#about">Retours</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📞 +212 754432678</li>
+                    <li>✉️ Ado@gmail.com</li>
+                    <li>🏠 Marina, 90000 Tanger</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="newsletter">
+                    <h4>Newsletter</h4>
+                    <form>
+                        <input type="email" placeholder="Votre e-mail" required>
+                        <button type="submit">S'abonner</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Ado Multi-Services. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
