@@ -673,3 +673,119 @@ backToTopBtn.addEventListener('click', function() {
         behavior: 'smooth'
     });
 });
+
+
+// ——— Références DOM admin ———
+const adminBtn      = document.getElementById('adminBtn');
+const adminModal    = document.getElementById('adminModal');
+const adminClose    = document.getElementById('adminClose');
+const adminTable    = document.querySelector('#adminTable tbody');
+const adminForm     = document.getElementById('adminForm');
+const adminIdInput  = document.getElementById('adminProductId');
+const adminTitle     = document.getElementById('adminTitle');
+const adminPrice    = document.getElementById('adminPrice');
+const adminDesc      = document.getElementById('adminDescription');
+const adminCat     = document.getElementById('adminCategory');
+const adminImg     = document.getElementById('adminImage');
+const ADMIN_PW = '123'; // à changer
+
+// ——— Ouvrir / fermer le modal ———
+adminBtn.addEventListener('click', () => {
+  const pw = prompt('Mot de passe admin :');
+  if (pw === ADMIN_PW) {
+    renderAdminTable();
+    adminModal.style.display = 'block';
+  } else {
+    alert('Accès refusé');
+  }
+});
+adminClose.addEventListener('click', () => adminModal.style.display = 'none');
+window.addEventListener('click', e => {
+  if (e.target === adminModal) adminModal.style.display = 'none';
+});
+
+// ——— Rendu du tableau admin ———
+function renderAdminTable() {
+  adminTable.innerHTML = '';
+  products.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${p.id}</td>
+      <td>${p.title}</td>
+      <td>${p.price.toFixed(2)}</td>
+      <td>${p.description}</td>
+      <td>${p.category}</td>
+      <td>${p.image}</td>
+      <td>
+        <button class="edit-admin" data-id="${p.id}">✏️</button>
+        <button class="del-admin"  data-id="${p.id}">🗑️</button>
+      </td>
+    `;
+    adminTable.appendChild(tr);
+  });
+
+  // lier les événements
+  document.querySelectorAll('.edit-admin').forEach(btn =>
+    btn.addEventListener('click', () => openAdminForm(+btn.dataset.id))
+  );
+  document.querySelectorAll('.del-admin').forEach(btn =>
+    btn.addEventListener('click', () => {
+      if (confirm('Supprimer ce produit ?')) {
+        products = products.filter(x => x.id !== +btn.dataset.id);
+        saveProductsAdmin();
+        renderAdminTable();
+        displayProducts(products); // met à jour la vue publique
+      }
+    })
+  );
+}
+
+// ——— Ouvrir le form pour ajouter ou éditer ———
+function openAdminForm(id) {
+  const p = products.find(x => x.id === id);
+  adminForm.style.display = 'block';
+  adminIdInput.value   = p.id;
+  adminTitle.value      = p.title;
+  adminPrice.value     = p.price;
+  adminDesc.value      = p.description;
+  adminCat.value       = p.category;
+  adminImg.value      = p.image;
+}
+
+// ——— Submit du form admin ———
+adminForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const id   = adminIdInput.value ? +adminIdInput.value : Date.now();
+  const title  = adminTitle.value.trim();
+  const price  = +adminPrice.value;
+  const desc   = adminDesc.value.trim();
+  const cat    = adminCat.value.trim();
+  const img   =  adminImg.value.trim();
+
+  const idx = products.findIndex(p => p.id === id);
+  if (idx > -1) {
+    // update
+    products[idx].title    = title;
+    products[idx].price    = price;
+    products[idx].description = desc;
+    products[idx].category = cat;
+    products[idx].image     = img;
+  } else {
+    // nouvel enregistrement
+    products.push({ id, title, price, description: desc, category: cat, image: img });
+  }
+
+  saveProductsAdmin();
+  renderAdminTable();
+  displayProducts(products);  // rafraîchit la liste publique
+  adminForm.reset();
+  adminForm.style.display = 'none';
+});
+
+// ——— Persistance dans localStorage ———
+function saveProductsAdmin() {
+  localStorage.setItem('admin_products', JSON.stringify(products));
+}
+// au chargement, si stocké, on récupère
+const saved = localStorage.getItem('admin_products');
+if (saved) products = JSON.parse(saved);

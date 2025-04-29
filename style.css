@@ -819,6 +819,14 @@ footer {
     margin-top: 30px;
     border-top: 1px solid #6c757d;
 }
+#adminBtn{
+    color: blue;
+    background-color: white;
+   
+}
+#adminBtn:hover{
+    background-color: dodgerblue;
+}
 
 /* Responsive styles */
 @media (max-width: 992px) {
