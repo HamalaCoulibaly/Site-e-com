@@ -135,7 +135,7 @@ let cart = [];
 let currentUser = null;
 let filteredProducts = [...products];
 
-// ------------- DOM Elements -------------
+//                 DOM Elements
 const productsContainer = document.getElementById('productsContainer');
 const cartCount = document.getElementById('cartCount');
 const cartItems = document.getElementById('cartItems');
@@ -167,7 +167,7 @@ const welcomeUser = document.getElementById('welcomeUser');
 const cartIcon = document.getElementById('cartIcon');
 const cartDropdown = document.getElementById('cartDropdown');
 
-// ------------- Event Listeners -------------
+//           Event Listeners
 document.addEventListener('DOMContentLoaded', init);
 applyFiltersBtn.addEventListener('click', applyFilters);
 resetFiltersBtn.addEventListener('click', resetFilters);
@@ -224,7 +224,7 @@ document.addEventListener('click', function() {
   
 });
 
-// ------------- Functions -------------
+//                                 Functions 
 
 // Initialisation
 function init() {
