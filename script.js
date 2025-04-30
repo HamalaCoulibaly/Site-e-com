@@ -224,7 +224,7 @@ document.addEventListener('click', function() {
   
 });
 
-//                                 Functions 
+//       Functions 
 
 // Initialisation
 function init() {
